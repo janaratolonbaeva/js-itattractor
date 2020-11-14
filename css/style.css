@@ -1,0 +1,84 @@
+button {
+  background: transparent;
+}
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: #333;
+  background: #fff;
+}
+.container {
+  min-width: 300px;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 30px;
+  position: relative;
+}
+.complete-block {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  padding: 30px 0;
+}
+.complete-input {
+  display: flex;
+  align-items: center;
+}
+.easy-autocomplete.eac-square input {
+  padding: 0 0 0 10px;
+  color: #333;
+  line-height: 30px;
+  font-style: normal;
+  opacity: 1;
+}
+.eac-icon-left .eac-item img {
+  height: 20px;
+  width: 20px;
+  margin-right: 10px;
+}
+.complete-block label {
+  margin-right: 20px;
+}
+.complete-block input {
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 34px;
+  color: #333;
+  background: #fff;
+  border: 1px solid #000;
+}
+.btn {
+  width: 150px;
+  height: 32px;
+  border: 1px solid #000;
+  text-align: center;
+}
+.complete-col {
+  padding: 0 15px;
+  width: 50%;
+}
+.items {
+  display: flex;
+  flex-direction: column;
+}
+.item {
+  display: flex;
+  flex-direction: column;
+}
+.row {
+  display: flex;
+  margin: 15px 0 0 50px;
+}
+.col {
+  width: auto;
+  display: flex;
+  flex-direction: column;
+}
+.col-item {
+  border: 1px solid #000;
+  padding: 10px 10px 10px 20px;
+}
