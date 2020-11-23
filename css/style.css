@@ -61,24 +61,28 @@ body {
   padding: 0 15px;
   width: 50%;
 }
-.items {
-  display: flex;
-  flex-direction: column;
+.title {
+  margin-right: 10px;
 }
 .item {
   display: flex;
-  flex-direction: column;
+  align-items: flex-start;
 }
 .row {
   display: flex;
-  margin: 15px 0 0 50px;
+  flex-direction: row;
+  margin: 10px 10px 20px 20px;
 }
 .col {
-  width: auto;
   display: flex;
   flex-direction: column;
 }
 .col-item {
   border: 1px solid #000;
-  padding: 10px 10px 10px 20px;
+  display: block;
+  padding: 10px 20px;
+}
+.img {
+  width: auto;
+  height: 200px;
 }

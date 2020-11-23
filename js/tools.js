@@ -3,7 +3,6 @@ $(() => {
   const form = $('#form');
   const country = $('#country');
   const url = 'https://restcountries.eu/rest/v2/all?fields';
-  const arrCountryInfo = [];
 
   $.getJSON(url, (countries) => {
     const options = {
@@ -25,119 +24,100 @@ $(() => {
     $(country).easyAutocomplete(options);
   });
 
-  const addArr = (item, obj, nameItem) => {
-    const divRow = $('<div class="item"></div>');
-    const value = obj[item];
-    const arrVal = value.join(', ');
-    item = nameItem;
-    const info = item + ': ' + arrVal;
-    $(divRow).html(info);
-    $('.container').find('.items').append(divRow);
+  const dictionary = {
+    name: 'Название',
+    topLevelDomain: 'Домен верхнего уровня',
+    alpha2Code: 'Двухзначный код',
+    alpha3Code: 'Трехзначный код',
+    callingCodes: 'Коды страны',
+    capital: 'Столица',
+    altSpellings: 'Альтернативные наименования',
+    region: 'Регион',
+    subregion: 'Субрегион',
+    population: 'Население',
+    latlng: 'Координаты',
+    demonym: 'Демоним',
+    area: 'Площадь',
+    gini: 'ВВП',
+    timezones: 'Временная зона',
+    borders: 'Границы',
+    nativeName: 'Родное название',
+    numericCode: 'Числовой код',
+    currencies: 'Валюта',
+    languages: 'Языки',
+    translations: 'В переводе',
+    flag: 'Флаг',
+    regionalBlocs: 'Состоит в союзах',
+    cioc: 'ЦИОК',
   };
 
-  const addObj = (item, obj, nameItem) => {
-    const divRow = $('<div class="item"></div>');
-    const nameValue = $('<div class="item-name"></div>');
-    const row = $('<div class="row"></div>');
+  const createData = (key, value) => {
+    const div = $('<div class="item"></div>');
+    const title = $('<span class="title"></span>');
+    title.html(dictionary[key] + ': ');
+    let data = $('<span class="text"></span>');
 
-    const value = obj[item];
-    item = nameItem;
-    $(nameValue).html(item + ': ');
-    $(divRow).append(nameValue);
+    if (key === 'flag') {
+      data = $('<img class="img"/>').attr('src', value);
+    }
 
-    value.forEach((index) => {
-      for (let i in index) {
-        const table = $('<div class="col"></div>');
-        const tableItem1 = $('<div class="col-item"></div>');
-        const tableItem2 = $('<div class="col-item"></div>');
-        $(table).append(tableItem1);
-        $(table).append(tableItem2);
-        $(tableItem1).html(i);
-        $(tableItem2).html(index[i]);
-        $(row).append(table);
+    if (Array.isArray(value)) {
+      for (let item of value) {
+        if (typeof item === 'string') {
+          const textArr = $(`<span>${item}, </span>`);
+          data = data.append(textArr);
+        } else {
+          const row = $('<div class="row"></div>');
+          for (let key in item) {
+            const col = $('<div class="col"></div>');
+            const span1 = $('<span class="col-item"></span>');
+            const span2 = $('<span class="col-item"></span>');
+            span1.html(key);
+            span2.html(item[key]);
+            col.append(span1, span2);
+            row.append(col);
+          }
+          data.append(row);
+        }
       }
-    });
-    $(divRow).append(row);
-    $('.container').find('.items').append(divRow);
-  };
+    } else {
+      data.html(value);
+    }
 
-  const addDiv = (item, obj, nameItem) => {
-    const divRow = $('<div class="item"></div>');
-    $('.container').find('.items').append(divRow);
+    if (typeof value === 'object' && !Array.isArray(value)) {
+      const row = $('<div class="row"></div>');
+      for (let key in value) {
+        const col = $('<div class="col"></div>');
+        const span1 = $('<span class="col-item"></span>');
+        const span2 = $('<span class="col-item"></span>');
+        span1.html(key);
+        span2.html(value[key]);
+        col.append(span1, span2);
+        row.append(col);
+      }
+      data.append(row);
+    }
 
-    const value = obj[item];
-    item = nameItem;
-    const info = item + ': ' + value;
-    divRow.html(info);
+    if (key === 'latlng') {
+      data = $('<div id="map" style="width: 600px; height: 400px"></div>');
+      ymaps.ready(init);
+      function init() {
+        var myMap = new ymaps.Map('map', {
+          center: value,
+          zoom: 7,
+        });
+      }
+    }
+
+    $(div).append(title);
+    $(div).append(data);
+    $('.container').append(div);
   };
 
   const printCountry = (response) => {
-    const obj = response[0];
-
-    for (let item in obj) {
-      if (item === 'name') {
-        addDiv(item, obj, 'Название');
-      }
-      if (item === 'topLevelDomain') {
-        addArr(item, obj, 'Домен верхнего уровня');
-      }
-      if (item === 'alpha2Code') {
-        addDiv(item, obj, 'Двузначный код');
-      }
-      if (item === 'alpha3Code') {
-        addDiv(item, obj, 'Трехзначный код');
-      }
-      if (item === 'callingCodes') {
-        addArr(item, obj, 'Код страны телефонного номера');
-      }
-      if (item === 'capital') {
-        addDiv(item, obj, 'Bishkek');
-      }
-      if (item === 'altSpellings') {
-        addArr(item, obj, 'Альтернативные варианты написания');
-      }
-      if (item === 'region') {
-        addDiv(item, obj, 'Регион');
-      }
-      if (item === 'subregion') {
-        addDiv(item, obj, 'Субрегион');
-      }
-      if (item === 'population') {
-        addDiv(item, obj, 'Население');
-      }
-      if (item === 'latlng') {
-        addArr(item, obj, 'Широта');
-      }
-      if (item === 'demonym') {
-        addDiv(item, obj, 'Демоним');
-      }
-      if (item === 'area') {
-        addDiv(item, obj, 'Площадь');
-      }
-      if (item === 'gini') {
-        addDiv(item, obj, 'Коэффициент Джини');
-      }
-      if (item === 'timezones') {
-        addArr(item, obj, 'Часовой пояс');
-      }
-      if (item === 'borders') {
-        addArr(item, obj, 'Границы');
-      }
-      if (item === 'nativeName') {
-        addDiv(item, obj, 'Родное название');
-      }
-      if (item === 'numericCode') {
-        addDiv(item, obj, 'Числовой код');
-      }
-      if (item === 'currencies') {
-        addObj(item, obj, 'Валюты');
-      }
-      if (item === 'languages') {
-        addObj(item, obj, 'Языки');
-      }
-      if (item === 'translations') {
-        addObj(item, obj, 'Перевод страны на другие языки');
-      }
+    const country = response[0];
+    for (let index in country) {
+      createData(index, country[index]);
     }
   };
 
